@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Play Music</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             font-family: 'Manrope', sans-serif;
@@ -15,25 +16,86 @@
             padding: 0;
             box-sizing: border-box;
         }
-        header {
+
+        /* Стиль для Navbar */
+        .navbar {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* Расположение элементов по углам */
             align-items: center;
             background-color: #2c3e50;
             color: white;
-            padding: 10px 30px; /* Отступы по краям */
+            padding: 10px 30px;
         }
+
         .logo {
             font-size: 24px;
+            color: aqua;
         }
+
+        /* Контейнер для кнопок управления */
+        .navbar-content {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* Кнопки управления проигрывателем */
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            background-color: #303030;
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.2);
+            background-color:aqua;
+        }
+
+        .stop-btn {
+            color: red;
+        }
+
+        /* Стили для ползунков громкости и скорости */
+        .slider-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            color: white;
+        }
+
+        .slider {
+            width: 100px;
+        }
+
+        .volume-display,
+        .speed-display {
+            color: white;
+        }
+
+        /* Стили для поиска */
         .search-container {
             display: flex;
             align-items: center;
             position: relative;
-            flex-grow: 1;
             max-width: 500px;
             width: 100%;
         }
+
         .search-bar {
             width: 100%;
             padding: 8px;
@@ -43,9 +105,11 @@
             font-size: 16px;
             transition: border 0.3s;
         }
+
         .search-bar:focus {
             border-color: #2c3e50;
         }
+
         .search-btn {
             position: absolute;
             right: 10px;
@@ -56,127 +120,221 @@
             cursor: pointer;
             transition: transform 0.3s;
         }
+
         .search-btn:hover {
             transform: scale(1.1);
         }
-        .artist-list, .hits-list {
-            display: flex;
-            gap: 10px;
-            list-style: none;
-            padding: 0;
-            margin: 0 30px; /* Отступы по краям */
-        }
-        .artist, .hits-list li {
-            background-color: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            width: 100%;
-            max-width: 150px;
-            margin: 5px;
-            text-align: center;
-        }
-        .artist {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .artist img {
-            width: 100%;
-            max-width: 150px;
-            height: auto;
-        }
-        .artist-name {
-            margin-top: 10px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        main {
-            flex-grow: 1;
-        }
-        
+
+        /* Стили для мобильных устройств */
         @media (max-width: 768px) {
-            header {
+            .navbar {
                 flex-direction: column;
                 text-align: center;
                 padding: 20px 15px;
             }
-            .search-container {
-                margin-bottom: 10px;
-                width: 100%;
-            }
-            .search-bar {
-                width: 80%; /* Поле ввода на мобильных устройствах */
-            }
-            .artist-list {
+
+            .navbar-content {
                 flex-direction: column;
-                margin: 0 30px;
+                gap: 10px;
+                background-color: aqua;
             }
-            .artist {
-                max-width: 100%;
+
+            .control-btn {
+                font-size: 18px;
+            }
+
+            .slider {
+                width: 80px;
             }
         }
+
         @media (max-width: 480px) {
             .search-bar {
-                width: 70%; /* Уменьшаем ширину поля ввода на очень маленьких экранах */
+                width: 70%; /* Уменьшаем ширину поля ввода на маленьких экранах */
             }
         }
+
+        /* Стили для секции популярных исполнителей */
+        .popular-artists {
+            
+            padding: 20px;
+        }
+
+        .popular-artists h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .artist-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .artist {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .artist:hover {
+            transform: scale(1.05);
+        }
+
+        .artist img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .artist-name {
+            padding: 10px;
+            font-size: 18px;
+           
+            color: rgb(0, 0, 0);
+           
+        }
+       
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">🎵 Play Music</div>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Поиск по исполнителю и названию трека" class="search-bar">
-            <button class="search-btn" onclick="searchTrack()">🔍</button>
+    <header class="navbar">
+        <div class="logo">
+            <i class="fas fa-music"></i> PlayMusic
+        </div>
+        <div class="navbar-content">
+            <!-- Кнопки управления плеером -->
+            <div class="player-controls">
+                <button class="control-btn" onclick="prevTrack()">
+                    <i class="fas fa-backward"></i>
+                </button>
+                <button class="control-btn" onclick="playPause()">
+                    <i class="fas fa-play" id="play-icon"></i>
+                </button>
+                <button class="control-btn" onclick="nextTrack()">
+                    <i class="fas fa-forward"></i>
+                </button>
+                <button class="control-btn stop-btn" onclick="stopPlayback()">
+                    <i class="fas fa-stop" id="stop-icon"></i>
+                </button>
+            </div>
+
+            <!-- Ползунки громкости и скорости -->
+            <div class="slider-container">
+                <div>
+                    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" onchange="changeVolume()" class="slider">
+                    <div class="volume-display">volume: <span id="volume-display">50%</span></div>
+                </div>
+                <div>
+                    <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1" onchange="changeSpeed()" class="slider">
+                    <div class="speed-display">speed: <span id="speed-display">1x</span></div>
+                </div>
+            </div>
+
+            <!-- Поле поиска -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Введите ваш вопрос" class="search-bar">
+                <button class="search-btn" onclick="searchTrack()">🔍</button>
+            </div>
         </div>
     </header>
+
     <main>
-        <section class="popular-artists">
-            <h2>Популярные исполнители</h2>
-            <ul class="artist-list">
-                <li class="artist" onclick="location.href='x1.html'">
-                    <img src="" alt="Miyagi">
-                    <div class="artist-name">Miyagi</div>
-                </li>
-                <li class="artist" onclick="location.href='x1.html'">
-                    <img src="" alt="Miyagi">
-                    <div class="artist-name">Miyagi</div>
-                </li>
-                <li class="artist" onclick="location.href='x1.html'">
-                    <img src="" alt="Miyagi">
-                    <div class="artist-name">Miyagi</div>
-                </li>
-                <li class="artist" onclick="location.href='x1.html'">
-                    <img src="" alt="Miyagi">
-                    <div class="artist-name">Miyagi</div>
-                </li>
-                <li class="artist" onclick="location.href='x1.html'">
-                    <img src="" alt="Miyagi">
-                    <div class="artist-name">Miyagi</div>
-                </li>
-                <li class="artist" onclick="location.href='x1.html'">
-                    <img src="" alt="Miyagi">
-                    <div class="artist-name">Miyagi</div>
-                </li>
-                <li class="artist" onclick="location.href='x1.html'">
-                    <img src="" alt="Miyagi">
-                    <div class="artist-name">Miyagi</div>
-                </li>
-                <li class="artist" onclick="location.href='x1.html'">
-                    <img src="" alt="Miyagi">
-                    <div class="artist-name">Miyagi</div>
-                </li>
-            </ul>
-        </section>
+        <!-- Основной контент страницы -->
     </main>
+
+    <!-- Секция популярных исполнителей -->
+    <section class="popular-artists">
+        <div class="h2">
+            <h2>Популярные исполнители</h2>
+        </div>
+        <ul class="artist-list">
+            <li class="artist" onclick="location.href='x1.html'">
+                <img src="data:image/jpeg;base64,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" alt="Miyagi">
+                <div class="artist-name">Miyagi</div>
+            </li>
+            <li class="artist" onclick="location.href='x1.html'">
+                <img src="https://via.placeholder.com/150" alt="Egoor Kreed">
+                <div class="artist-name">Egor Kreed</div>
+            </li>
+            <li class="artist" onclick="location.href='x1.html'">
+                <img src="https://via.placeholder.com/150" alt="Miyagi">
+                <div class="artist-name">Miyagi</div>
+            </li>
+            <li class="artist" onclick="location.href='x1.html'">
+                <img src="https://via.placeholder.com/150" alt="Miyagi">
+                <div class="artist-name">Miyagi</div>
+            </li>
+            <li class="artist" onclick="location.href='x1.html'">
+                <img src="https://via.placeholder.com/150" alt="Miyagi">
+                <div class="artist-name">Miyagi</div>
+            </li>
+            <li class="artist" onclick="location.href='x1.html'">
+                <img src="https://via.placeholder.com/150" alt="Miyagi">
+                <div class="artist-name">Miyagi</div>
+            </li>
+            <li class="artist" onclick="location.href='x1.html'">
+                <img src="https://via.placeholder.com/150" alt="Miyagi">
+                <div class="artist-name">Miyagi</div>
+            </li>
+            <li class="artist" onclick="location.href='x1.html'">
+                <img src="https://via.placeholder.com/150" alt="Miyagi">
+                <div class="artist-name">Miyagi</div>
+            </li>
+        </ul>
+    </section>
+
     <script>
+        // Функции управления плеером
+        function prevTrack() {
+            alert("Переключение на предыдущий трек");
+        }
+
+        function playPause() {
+            const playIcon = document.getElementById('play-icon');
+            if (playIcon.classList.contains('fa-play')) {
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            } else {
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            }
+            alert("Воспроизведение/Пауза");
+        }
+
+        function nextTrack() {
+            alert("Переключение на следующий трек");
+        }
+
+        function stopPlayback() {
+            alert("Остановка воспроизведения");
+        }
+
+        // Изменение громкости
+        function changeVolume() {
+            const volume = document.getElementById('volume').value;
+            document.getElementById('volume-display').textContent = `volume: ${Math.round(volume * 100)}%`;
+        }
+
+        // Изменение скорости воспроизведения
+        function changeSpeed() {
+            const speed = document.getElementById('speed').value;
+            document.getElementById('speed-display').textContent = `speed: ${speed}x`;
+        }
+
         // Функция для обработки поиска
         function searchTrack() {
             const searchQuery = document.getElementById('searchInput').value;
             if (searchQuery) {
-                // Логика поиска (например, отправка запроса на сервер или фильтрация контента)
+                // Логика поиска
                 alert("Ищем: " + searchQuery);
             } else {
                 alert("Введите текст для поиска.");
