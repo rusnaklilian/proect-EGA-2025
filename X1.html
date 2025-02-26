@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styles */
+body {
+    font-family: 'Manrope', sans-serif;
+    background: linear-gradient(to right, #ff006a, #000000); /* Градиент слева направо */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0; /* Убираем отступы */
+    padding: 0;
+}
+
+
+
+
+        .slider {
+            width: 40%;
+            margin: 5px 10px;
+        }
+
+        .volume-display, .speed-display {
+            font-size: 0.85em;
+            color: #8b8b8b;
+            margin-top: 3px;
+        }
+
+        .control-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #volume, #speed {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #000000;
+            border-radius: 10px;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        /* Navbar container */
+        .navbar {
+            background-color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1;  /* Added z-index */
+            position: relative;  /* Ensures the navbar stays on top */
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            color: aqua;
+        }
+
+        .navbar .player-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .navbar .control-btn {
+            width: 40px;
+            height: 40px;
+            background-color: #303030;
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .control-btn:hover {
+            background-color:aqua;
+        }
+
+        /* Playlist container */
+        .playlist-container {
+            margin-top: 7%; /* Added margin-top to prevent overlap with navbar */
+            background-color: #333;
+            padding: 20px;
+            flex-grow: 1; /* Allows the playlist to take the remaining space */
+            border-radius: 10px;  /* Optional: add rounded corners */
+            width: 90%;  /* Limit width of the playlist container */
+            max-width: 80%;  /* Limit max-width to prevent it from stretching too wide */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .playlist-title {
+            font-size: 1.5em;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .playlist {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .playlist li {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .playlist li:hover {
+            background-color: #555;
+        }
+
+        /* Responsive for small screens */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <i class="fas fa-music"></i> PlayMusic
+        </div>
+
+        <div class="player-controls">
+            <button class="control-btn" onclick="prevTrack()">
+                <i class="fas fa-backward"></i>
+            </button>
+            <button class="control-btn" onclick="playPause()">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <button class="control-btn" onclick="nextTrack()">
+                <i class="fas fa-forward"></i>
+            </button>
+            <button class="control-btn stop-btn" onclick="stopPlayback()">
+                <i class="fas fa-stop" id="stop-icon"></i>
+            </button>
+        </div>
+        <div class="control-container">
+            <div>
+                <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" onchange="changeVolume()" class="slider">
+                <div class="volume-display">volume: <span id="volume-display">50%</span></div>
+            </div>
+            <div>
+                <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1" onchange="changeSpeed()" class="slider">
+                <div class="speed-display">speed: <span id="speed-display">1x</span></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Playlist Section -->
+    <div class="playlist-container">
+        <div class="playlist-title">Egor Kreed Songs</div>
+        <ul class="playlist" id="playlist">
+            <li onclick="selectTrack(0)">Egor Kreed - Samaya Samaya</li>
+            <li onclick="selectTrack(1)">Egor Kreed - Zalyot</li>
+            <li onclick="selectTrack(2)">Egor Kreed - Pustoi</li>
+            <li onclick="selectTrack(3)">Egor Kreed - Strana</li>
+            <li onclick="selectTrack(4)">Egor Kreed - Vse Dlya Tebya</li>
+            <li onclick="selectTrack(0)">Egor Kreed - Samaya Samaya</li>
+            <li onclick="selectTrack(1)">Egor Kreed - Zalyot</li>
+            <li onclick="selectTrack(2)">Egor Kreed - Pustoi</li>
+            <li onclick="selectTrack(3)">Egor Kreed - Strana</li>
+            <li onclick="selectTrack(4)">Egor Kreed - Vse Dlya Tebya</li>
+            <li onclick="selectTrack(0)">Egor Kreed - Samaya Samaya</li>
+            <li onclick="selectTrack(1)">Egor Kreed - Zalyot</li>
+            <li onclick="selectTrack(2)">Egor Kreed - Pustoi</li>
+            <li onclick="selectTrack(3)">Egor Kreed - Strana</li>
+            <li onclick="selectTrack(4)">Egor Kreed - Vse Dlya Tebya</li>
+            <li onclick="selectTrack(0)">Egor Kreed - Samaya Samaya</li>
+            <li onclick="selectTrack(1)">Egor Kreed - Zalyot</li>
+            <li onclick="selectTrack(2)">Egor Kreed - Pustoi</li>
+            <li onclick="selectTrack(3)">Egor Kreed - Strana</li>
+            <li onclick="selectTrack(4)">Egor Kreed - Vse Dlya Tebya</li>
+        </ul>
+    </div>
+
+    <script>
+        let isPlaying = false;
+        let currentTrack = 0;
+        let audio = new Audio();
+        const tracks = [
+            'd:\\MUZIC\\GYA, Babasha - Baklava.mp3',  // Example local paths (ensure they are correct)
+            'd:\\MUZIC\\Егор Крид - Девочка С Картинки.mp3',
+            'd:\\MUZIC\\Пицца - Фары.mp3',
+            'd:\\MUZIC\\egor_kreed_strana.mp3',
+            'd:\\MUZIC\\egor_kreed_vse_dlya_tebya.mp3'
+        ];
+
+        function playPause() {
+            if (isPlaying) {
+                audio.pause();
+                document.querySelector("#play-icon").classList.replace("fa-pause", "fa-play");
+                isPlaying = false;
+            } else {
+                audio.play();
+                document.querySelector("#play-icon").classList.replace("fa-play", "fa-pause");
+                isPlaying = true;
+            }
+        }
+
+        function stopPlayback() {
+            audio.pause();
+            audio.currentTime = 0;
+            document.querySelector("#play-icon").classList.replace("fa-pause", "fa-play");
+            isPlaying = false;
+        }
+
+        function prevTrack() {
+            currentTrack = (currentTrack === 0) ? tracks.length - 1 : currentTrack - 1;
+            selectTrack(currentTrack);
+        }
+
+        function nextTrack() {
+            currentTrack = (currentTrack === tracks.length - 1) ? 0 : currentTrack + 1;
+            selectTrack(currentTrack);
+        }
+
+        function selectTrack(trackIndex) {
+            currentTrack = trackIndex;
+            audio.src = tracks[trackIndex]; // Set the audio source to the selected track
+            audio.play();
+            isPlaying = true;
+            document.querySelector("#play-icon").classList.replace("fa-play", "fa-pause");
+        }
+
+        function changeVolume() {
+            audio.volume = document.getElementById('volume').value;
+            document.getElementById('volume-display').textContent = ${Math.round(audio.volume * 100)}%;
+        }
+
+        function changeSpeed() {
+            audio.playbackRate = document.getElementById('speed').value;
+            document.getElementById('speed-display').textContent = ${audio.playbackRate}x;
+        }
+    </script>
+</body>
+</html>
