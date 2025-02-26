@@ -14,18 +14,15 @@
         }
 
         /* Body styles */
-body {
-    font-family: 'Manrope', sans-serif;
-    background: linear-gradient(to right, #ff006a, #000000); /* Градиент слева направо */
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    margin: 0; /* Убираем отступы */
-    padding: 0;
-}
-
-
-
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(to right, #ff006a, #000000); /* Градиент слева направо */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0; /* Убираем отступы */
+            padding: 0;
+        }
 
         .slider {
             width: 40%;
@@ -146,7 +143,6 @@ body {
                 gap: 10px;
             }
         }
-        
     </style>
 </head>
 <body>
@@ -178,6 +174,12 @@ body {
                 <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1" onchange="changeSpeed()" class="slider">
                 <div class="speed-display">speed: <span id="speed-display">1x</span></div>
             </div>
+            <!-- Back Button -->
+            <a href="index.html">
+                <button class="control-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </a>
         </div>
     </header>
 
@@ -190,21 +192,16 @@ body {
             <li onclick="selectTrack(2)">Egor Kreed - Pustoi</li>
             <li onclick="selectTrack(3)">Egor Kreed - Strana</li>
             <li onclick="selectTrack(4)">Egor Kreed - Vse Dlya Tebya</li>
-            <li onclick="selectTrack(0)">Egor Kreed - Samaya Samaya</li>
-            <li onclick="selectTrack(1)">Egor Kreed - Zalyot</li>
-            <li onclick="selectTrack(2)">Egor Kreed - Pustoi</li>
-            <li onclick="selectTrack(3)">Egor Kreed - Strana</li>
-            <li onclick="selectTrack(4)">Egor Kreed - Vse Dlya Tebya</li>
-            <li onclick="selectTrack(0)">Egor Kreed - Samaya Samaya</li>
-            <li onclick="selectTrack(1)">Egor Kreed - Zalyot</li>
-            <li onclick="selectTrack(2)">Egor Kreed - Pustoi</li>
-            <li onclick="selectTrack(3)">Egor Kreed - Strana</li>
-            <li onclick="selectTrack(4)">Egor Kreed - Vse Dlya Tebya</li>
-            <li onclick="selectTrack(0)">Egor Kreed - Samaya Samaya</li>
-            <li onclick="selectTrack(1)">Egor Kreed - Zalyot</li>
-            <li onclick="selectTrack(2)">Egor Kreed - Pustoi</li>
-            <li onclick="selectTrack(3)">Egor Kreed - Strana</li>
-            <li onclick="selectTrack(4)">Egor Kreed - Vse Dlya Tebya</li>
+            <li onclick="selectTrack(5)">Egor Kreed - Samaya Samaya</li>
+            <li onclick="selectTrack(6)">Egor Kreed - Zalyot</li>
+            <li onclick="selectTrack(7)">Egor Kreed - Pustoi</li>
+            <li onclick="selectTrack(8)">Egor Kreed - Strana</li>
+            <li onclick="selectTrack(9)">Egor Kreed - Vse Dlya Tebya</li>
+            <li onclick="selectTrack(10)">Egor Kreed - Samaya Samaya</li>
+            <li onclick="selectTrack(11)">Egor Kreed - Zalyot</li>
+            <li onclick="selectTrack(12)">Egor Kreed - Pustoi</li>
+            <li onclick="selectTrack(13)">Egor Kreed - Strana</li>
+            <li onclick="selectTrack(14)">Egor Kreed - Vse Dlya Tebya</li>
         </ul>
     </div>
 
@@ -259,12 +256,12 @@ body {
 
         function changeVolume() {
             audio.volume = document.getElementById('volume').value;
-            document.getElementById('volume-display').textContent = ${Math.round(audio.volume * 100)}%;
+            document.getElementById('volume-display').textContent = `${Math.round(audio.volume * 100)}%`;
         }
 
         function changeSpeed() {
             audio.playbackRate = document.getElementById('speed').value;
-            document.getElementById('speed-display').textContent = ${audio.playbackRate}x;
+            document.getElementById('speed-display').textContent = `${audio.playbackRate}x`;
         }
     </script>
 </body>
